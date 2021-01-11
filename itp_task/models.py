@@ -72,6 +72,8 @@ def register(registration_data):
                 contact = list(contact)
                 contact[2] = data['registrant'].get('mail')
                 contact = tuple(contact)
+        if contact_found:
+            break
     # if registrant's data (mail or phone) does not match any contacts list data
     # try to match it wit leads list data
     if not contact_found:
@@ -83,6 +85,7 @@ def register(registration_data):
                 new_contact = (data['registrant'].get('name'), data['registrant'].get('mail'), data['registrant'].get('phone'))
                 contacts_list.append(new_contact)
                 leads_list.remove(lead)
+                break
 
 
 for registrant in registrants:
