@@ -76,7 +76,9 @@ def register(registration_data):
             break
     # if registrant's data (mail or phone) does not match any contacts list data
     # try to match it wit leads list data
+
     if not contact_found:
+        lead_found = False
         for lead in leads_list:
             if data['registrant'].get('email') and lead[1] == data['registrant'].get('email') or \
                         data['registrant'].get('phone') and contact[1] == data['registrant'].get('phone'):
@@ -85,8 +87,13 @@ def register(registration_data):
                 new_contact = (data['registrant'].get('name'), data['registrant'].get('mail'), data['registrant'].get('phone'))
                 contacts_list.append(new_contact)
                 leads_list.remove(lead)
+                lead_found = True
                 break
-
+    # if registrant's data does not matched with any contact's data or lead's data ==>
+    # create a new Contact
+    if not contact_found and not lead_found:
+        new_contact = (data['registrant'].get('name'), data['registrant'].get('mail'), data['registrant'].get('phone'))
+        contacts_list.append(new_contact)
 
 for registrant in registrants:
     registration_data = json.dumps({
